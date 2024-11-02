@@ -9,6 +9,8 @@ export const login = async (credentials) => {
   // Store both token and username in localStorage
   localStorage.setItem('token', response.data.token);
   localStorage.setItem('username', response.data.username);
+  localStorage.setItem('role', response.data.role);
+  localStorage.setItem('userinfo', response.data.userinfo);
 
   return response.data;
 };

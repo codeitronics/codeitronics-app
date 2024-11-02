@@ -24,7 +24,8 @@ exports.login = async (req, res) => {
     });
 
     // Return token and username
-    res.json({ token, username: user.username });
+    console.log('#### user', user);
+    res.json({ token, username: user.username, role: user.role, userinfo: user });
   } catch (error) {
     console.error('Error in login:', error);
     res.status(500).json({ message: 'Server error' });

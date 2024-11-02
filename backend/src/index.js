@@ -5,6 +5,8 @@ const connectDB = require('./config/db');
 const blogRoutes = require('./routes/blogRoutes');
 const userRoutes = require('./routes/userRoutes'); // User routes for auth
 const companyRoutes = require('./routes/companyRoutes'); // User routes for auth
+const uploadRoutes = require('./routes/uploadRoutes');
+
 const cors = require('cors');
 const path = require('path');
 
@@ -25,6 +27,8 @@ app.use('/assets', express.static(path.join(__dirname, '../../frontend/public/as
 app.use('/api/blogs', blogRoutes); // Blog routes
 app.use('/api/users', userRoutes); // User auth routes
 app.use('/api/company', companyRoutes); // User auth routes
+app.use('/api/upload', uploadRoutes);
+
 
 // 404 Handler for unknown routes
 app.use((req, res, next) => {
