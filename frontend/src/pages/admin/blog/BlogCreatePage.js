@@ -1,4 +1,4 @@
-// src/pages/BlogCreatePage.js
+// src/pages/admin/BlogCreatePage.js
 import React from 'react';
 import BlogForm from '../../../components/admin/blog/BlogForm';
 import { createBlogPost } from '../../../services/blogService';
