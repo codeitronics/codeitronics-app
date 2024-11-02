@@ -1,7 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faComment } from '@fortawesome/free-solid-svg-icons';
+import { BsTwitter, BsFacebook, BsLinkedin } from 'react-icons/bs';
+import { FaComment } from 'react-icons/fa';
 import CommentSection from './CommentSection';
 import RelatedPosts from './RelatedPosts';
 import AuthorInfo from './AuthorInfo';
@@ -26,20 +25,20 @@ const BlogDetailLayout = ({ blog }) => {
             {blog.category}
           </a>{' '}
           <span className="ml-4">
-            <FontAwesomeIcon icon={faComment} /> {blog.commentCount || 0}
+            <FaComment /> {blog.commentCount || 0}
           </span>
         </p>
 
         {/* Share Icons */}
         <div className="flex space-x-4 mb-4">
           <a href="#" className="text-blue-500">
-            <FontAwesomeIcon icon={faTwitter} size="lg" />
+            <BsTwitter size={24} />
           </a>
           <a href="#" className="text-blue-800">
-            <FontAwesomeIcon icon={faFacebook} size="lg" />
+            <BsFacebook size={24} />
           </a>
           <a href="#" className="text-blue-600">
-            <FontAwesomeIcon icon={faLinkedin} size="lg" />
+            <BsLinkedin size={24} />
           </a>
         </div>
 
@@ -58,13 +57,13 @@ const BlogDetailLayout = ({ blog }) => {
         {/* Share Icons Again */}
         <div className="flex space-x-4 mt-6">
           <a href="#" className="text-blue-500">
-            <FontAwesomeIcon icon={faTwitter} size="lg" />
+            <BsTwitter size={24} />
           </a>
           <a href="#" className="text-blue-800">
-            <FontAwesomeIcon icon={faFacebook} size="lg" />
+            <BsFacebook size={24} />
           </a>
           <a href="#" className="text-blue-600">
-            <FontAwesomeIcon icon={faLinkedin} size="lg" />
+            <BsLinkedin size={24} />
           </a>
         </div>
 
