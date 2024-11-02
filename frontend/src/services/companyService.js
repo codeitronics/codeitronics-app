@@ -1,11 +1,11 @@
 // src/services/companyService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/company';
+const apiURL = process.env.REACT_APP_API_URI;
 
 export const fetchCompanyInfo = async () => {
   const token = localStorage.getItem('token');
-  const response = await axios.get(API_URL, {
+  const response = await axios.get(`${apiURL}/api/company`, {
     headers: { Authorization: `Bearer ${token}` }
   });
   return response.data;
@@ -19,6 +19,6 @@ export const updateCompanyInfo = async (formData) => {
       Authorization: `Bearer ${token}`
     }
   };
-  const response = await axios.put(API_URL, formData, config);
+  const response = await axios.put(`${apiURL}/api/company`, formData, config);
   return response.data;
 };

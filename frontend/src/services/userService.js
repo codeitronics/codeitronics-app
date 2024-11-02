@@ -1,15 +1,18 @@
 // src/services/userService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/users';
+const apiURL = process.env.REACT_APP_API_URI;
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
 
 // Fetch all users
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get(API_URL, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    const response = await axios.get(`${apiURL}/api/users`, {
+      headers: getAuthHeaders(),
     });
     return response.data;
   } catch (error) {
@@ -21,10 +24,8 @@ export const fetchUsers = async () => {
 // Fetch user by ID
 export const getUserById = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    const response = await axios.get(`${apiURL}/api/users/${userId}`, {
+      headers: getAuthHeaders(),
     });
     return response.data;
   } catch (error) {
@@ -37,12 +38,10 @@ export const getUserById = async (userId) => {
 export const updateUserRole = async (userId, role) => {
   try {
     const response = await axios.put(
-      `${API_URL}/role/${userId}`,
+      `${apiURL}/api/users/role/${userId}`,
       { role },
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        headers: getAuthHeaders(),
       }
     );
     return response.data;
@@ -55,10 +54,8 @@ export const updateUserRole = async (userId, role) => {
 // Create a new user
 export const createUser = async (userData) => {
   try {
-    const response = await axios.post(API_URL, userData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    const response = await axios.post(`${apiURL}/api/users`, userData, {
+      headers: getAuthHeaders(),
     });
     return response.data;
   } catch (error) {
@@ -70,11 +67,9 @@ export const createUser = async (userData) => {
 // Update user information
 export const updateUser = async (userId, updateData) => {
   try {
-    console.log('### updateData 1 = ',updateData);
-    const response = await axios.put(`${API_URL}/${userId}`, updateData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
+    console.log('### updateData 1 = ', updateData);
+    const response = await axios.put(`${apiURL}/api/users/${userId}`, updateData, {
+      headers: getAuthHeaders(),
     });
     return response.data;
   } catch (error) {

@@ -1,60 +1,49 @@
 // src/services/blogService.js
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api/blogs';
+const apiURL = process.env.REACT_APP_API_URI;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-// Fetch all blog posts
-/*export const fetchAllBlogs = async () => {
-  const response = await axios.get(API_URL, {
-    headers: getAuthHeaders(),
-  });
-  return response.data;
-};*/
-
-// Get a blog post by ID
-export const getBlogById = async (blogId) => {
-  const response = await axios.get(`${API_URL}/${blogId}`, {
+export const fetchAllBlogs = async () => {
+  const response = await axios.get(`${apiURL}/api/blogs`, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
-// Other CRUD functions...
+export const getBlogById = async (blogId) => {
+  const response = await axios.get(`${apiURL}/api/blogs/${blogId}`, {
+    headers: getAuthHeaders(),
+  });
+  return response.data;
+};
 
 export const createBlogPost = async (formData) => {
-  const response = await axios.post(`${API_URL}/create`, formData, {
+  const response = await axios.post(`${apiURL}/api/blogs/create`, formData, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
 export const deleteBlogPost = async (blogId) => {
-  const response = await axios.delete(`${API_URL}/${blogId}`, {
+  const response = await axios.delete(`${apiURL}/api/blogs/${blogId}`, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
 export const updateBlogPost = async (blogId, formData) => {
-  const response = await axios.put(`${API_URL}/update/${blogId}`, formData, {
+  const response = await axios.put(`${apiURL}/api/blogs/update/${blogId}`, formData, {
     headers: getAuthHeaders(),
   });
   return response.data;
 };
 
-// Fetch blog by URL slug
 export const getBlogBySlug = async (urlSlug) => {
-  const response = await axios.get(`${API_URL}/slug/${urlSlug}`);
-  return response.data;
-};
-
-// Fetch all blog posts
-export const fetchAllBlogs = async () => {
-  const response = await axios.get(API_URL,);
+  const response = await axios.get(`${apiURL}/api/blogs/slug/${urlSlug}`);
   return response.data;
 };
