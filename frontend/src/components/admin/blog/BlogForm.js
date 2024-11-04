@@ -1,4 +1,3 @@
-// src/components/admin/BlogForm.js
 import React, { useState, useRef, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { uploadMedia } from '../../../services/uploadService';
@@ -15,7 +14,9 @@ const BlogForm = ({ initialData = {}, onSubmit, isEdit = false }) => {
     url: initialData.url || '',
     categories: initialData.categories || '',
     tags: initialData.tags || '',
-    authorName: initialData.authorName || 'CodeItronics',
+    authorName: initialData.authorName || 'CodeITronics',
+    status: initialData.status || 'Draft',
+    date: initialData.date || new Date().toISOString().split('T')[0],
   });
   const [imagePreview, setImagePreview] = useState(initialData.featureImage || null);
   const [contentImageUrls, setContentImageUrls] = useState(initialData.contentImages || []);
@@ -67,6 +68,7 @@ const BlogForm = ({ initialData = {}, onSubmit, isEdit = false }) => {
         </button>
       )}
       <form onSubmit={handleSubmit} className="space-y-8">
+        
         {/* Title */}
         <div>
           <label className="font-bold text-sm">Title</label>
@@ -81,31 +83,118 @@ const BlogForm = ({ initialData = {}, onSubmit, isEdit = false }) => {
           />
         </div>
 
-        {/* Slug */}
-        <div>
-          <label className="font-bold text-sm">URL Slug</label>
-          <input
-            type="text"
-            name="url"
-            value={formData.url}
-            readOnly
-            className="mt-2 w-full rounded-md border bg-gray-100"
-          />
-        </div>
+        <div className="grid grid-cols-4 gap-6">
+          {/* Content Section - 3/4 */}
+          <div className="col-span-3">
+            <label className="font-bold text-sm">Content</label>
+            {isEditMode ? (
+              <JoditEditor ref={editor} value={formData.content} onBlur={handleEditorChange} />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: formData.content }} className="mt-2 text-gray-700"></div>
+            )}
+          </div>
 
-        {/* Feature Image */}
-        <div>
-          <label className="font-bold text-sm">Feature Image</label>
-          <input
-            type="file"
-            name="featureImage"
-            onChange={handleInputChange}
-            className="mt-2 w-full"
-            disabled={!isEditMode}
-          />
-          {imagePreview && (
-            <img src={imagePreview} alt="Feature Preview" className="mt-4 h-24 rounded-lg" />
-          )}
+          {/* Sidebar Section - 1/4 */}
+          <div className="col-span-1 space-y-4">
+            
+            {/* Feature Image */}
+            <div>
+              <label className="font-bold text-sm">Feature Image</label>
+              <input
+                type="file"
+                name="featureImage"
+                onChange={handleInputChange}
+                className="mt-2 w-full"
+                disabled={!isEditMode}
+              />
+              {imagePreview && (
+                <img src={imagePreview} alt="Feature Preview" className="mt-4 h-24 rounded-lg" />
+              )}
+            </div>
+
+            {/* Slug */}
+            <div>
+              <label className="font-bold text-sm">URL Slug</label>
+              <input
+                type="text"
+                name="url"
+                value={formData.url}
+                readOnly
+                className="mt-2 w-full rounded-md border bg-gray-100"
+              />
+            </div>
+
+            {/* Category */}
+            <div>
+              <label className="font-bold text-sm">Category</label>
+              <input
+                type="text"
+                name="categories"
+                value={formData.categories}
+                onChange={handleInputChange}
+                className="mt-2 w-full rounded-md border"
+                placeholder="e.g., Web Development"
+                disabled={!isEditMode}
+              />
+            </div>
+
+            {/* Tags */}
+            <div>
+              <label className="font-bold text-sm">Tags</label>
+              <input
+                type="text"
+                name="tags"
+                value={formData.tags}
+                onChange={handleInputChange}
+                className="mt-2 w-full rounded-md border"
+                placeholder="e.g., JavaScript, React"
+                disabled={!isEditMode}
+              />
+            </div>
+
+            {/* Status */}
+            <div>
+              <label className="font-bold text-sm">Status</label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                className="mt-2 w-full rounded-md border"
+                disabled={!isEditMode}
+              >
+                <option value="Draft">Draft</option>
+                <option value="Published">Published</option>
+                <option value="Archived">Archived</option>
+              </select>
+            </div>
+
+            {/* Author Name */}
+            <div>
+              <label className="font-bold text-sm">Author Name</label>
+              <input
+                type="text"
+                name="authorName"
+                value={formData.authorName}
+                onChange={handleInputChange}
+                className="mt-2 w-full rounded-md border"
+                placeholder="Author name"
+                disabled={!isEditMode}
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="font-bold text-sm">Date</label>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+                className="mt-2 w-full rounded-md border"
+                disabled={!isEditMode}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Content Images */}
@@ -129,61 +218,17 @@ const BlogForm = ({ initialData = {}, onSubmit, isEdit = false }) => {
           ))}
         </div>
 
-        {/* Category, Tags, and Author */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label className="font-bold text-sm">Category</label>
-            <input
-              type="text"
-              name="categories"
-              value={formData.categories}
-              onChange={handleInputChange}
-              className="mt-2 w-full rounded-md border"
-              placeholder="e.g., Web Development"
-              disabled={!isEditMode}
-            />
-          </div>
-          <div>
-            <label className="font-bold text-sm">Tags</label>
-            <input
-              type="text"
-              name="tags"
-              value={formData.tags}
-              onChange={handleInputChange}
-              className="mt-2 w-full rounded-md border"
-              placeholder="e.g., JavaScript, React"
-              disabled={!isEditMode}
-            />
-          </div>
-          <div>
-            <label className="font-bold text-sm">Author Name</label>
-            <input
-              type="text"
-              name="authorName"
-              value={formData.authorName}
-              onChange={handleInputChange}
-              className="mt-2 w-full rounded-md border"
-              placeholder="Author name"
-              disabled={!isEditMode}
-            />
-          </div>
-        </div>
-
-        {/* Content */}
-        <div>
-          <label className="font-bold text-sm">Content</label>
-          {isEditMode ? (
-            <JoditEditor ref={editor} value={formData.content} onBlur={handleEditorChange} />
-          ) : (
-            <div dangerouslySetInnerHTML={{ __html: formData.content }} className="mt-2 text-gray-700"></div>
-          )}
-        </div>
-
         {/* Action Buttons */}
         {isEditMode && (
           <div className="mt-6 flex gap-x-4">
             <button type="button" className="bg-gray-200 px-3 py-2 rounded-md" onClick={() => setIsEditMode(false)}>
               Cancel
+            </button>
+            <button type="button" className="bg-yellow-500 text-white px-3 py-2 rounded-md">
+              Preview
+            </button>
+            <button type="submit" className="bg-gray-500 text-white px-3 py-2 rounded-md">
+              Save
             </button>
             <button type="submit" className="bg-indigo-600 text-white px-3 py-2 rounded-md">
               Save and Publish

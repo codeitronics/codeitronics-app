@@ -48,7 +48,20 @@ const ServicesSection = () => {
         "Optimize your customer relationships and streamline your sales processes with our tailored Salesforce development solutions, designed to help your business grow.",
       icon: <FaLaptopCode size={40} className="mb-4" />,
     },
+    {
+      name: "Data Analytics",
+      description:
+        "Unlock the power of data to drive business insights. Our analytics services help you visualize data patterns, understand market trends, and make data-driven decisions.",
+      icon: <FaBrain size={40} className="mb-4" />, // or choose a different icon if available
+    },
+    {
+      name: "Cybersecurity",
+      description:
+        "Protect your digital assets with our comprehensive cybersecurity solutions, offering vulnerability assessments, secure network architecture, and proactive threat monitoring.",
+      icon: <FaServer size={40} className="mb-4" />, // or choose a different icon if available
+    },
   ];
+  
 
   const sectionBgClass = theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-50 text-gray-800';
   const cardBgClass = theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-white text-gray-600';
