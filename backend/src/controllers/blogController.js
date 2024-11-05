@@ -31,6 +31,23 @@ exports.getBlogById = async (req, res) => {
   }
 };
 
+// Fetch a single blog post by Slug
+exports.getBlogBySlug = async (req, res) => {
+  try {
+    const { urlSlug } = req.params;
+    const blog = await Blog.findOne({ urlSlug });
+
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog post not found' });
+    }
+
+    res.status(200).json(blog);
+  } catch (error) {
+    console.error('Failed to fetch blog by slug:', error);
+    res.status(500).json({ error: 'Failed to fetch blog post' });
+  }
+};
+
 // Create a new blog post
 exports.createBlogPost = async (req, res) => {
   try {
@@ -43,12 +60,12 @@ exports.createBlogPost = async (req, res) => {
       categories,
       tags,
       content,
-      featureImage, // URL passed from the frontend
-      contentImages, // Array of URLs passed from the frontend
+      featureImage,
+      contentImages,
       url: urlSlug,
       urlSlug,
       status: action,
-      author: req.user.id,  // Assuming `req.user` is set by authentication middleware
+      author: req.user.id,
       authorName: 'CodeITronics',
     });
 
@@ -67,7 +84,6 @@ exports.updateBlogPost = async (req, res) => {
     const { title, categories, tags, content, action, description, featureImage, contentImages } = req.body;
     const urlSlug = generateSlug(title);
 
-    // Update the blog post
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
       {
@@ -75,13 +91,13 @@ exports.updateBlogPost = async (req, res) => {
         categories,
         tags,
         content,
-        featureImage, // Updated URL from frontend if changed
-        contentImages, // Updated URLs from frontend if changed
+        featureImage,
+        contentImages,
         url: urlSlug,
         status: action,
         description,
         updatedAt: Date.now(),
-        authorName: 'CodeITronics',  // Static author name as specified
+        authorName: 'CodeITronics',
       },
       { new: true }
     );
