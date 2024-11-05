@@ -1,4 +1,3 @@
-// routes/blogRoutes.js
 const express = require('express');
 const {
   createBlogPost,
@@ -8,6 +7,7 @@ const {
   toggleStatus,
   getAllBlogs,
   getBlogById,
+  getBlogBySlug, // Import the new controller function
 } = require('../controllers/blogController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -16,6 +16,7 @@ const router = express.Router();
 // Routes for blog actions
 router.get('/', getAllBlogs);
 router.get('/:id', authMiddleware, getBlogById);
+router.get('/slug/:urlSlug', getBlogBySlug); // Use the new getBlogBySlug function
 
 // Create a new blog post
 router.post('/create', authMiddleware, createBlogPost);
@@ -31,17 +32,5 @@ router.put('/archive/:id', authMiddleware, archiveBlogPost);
 
 // Toggle Draft/Publish status
 router.put('/toggle-status/:id', authMiddleware, toggleStatus);
-
-// Fetch blog by URL slug
-router.get('/slug/:urlSlug', async (req, res) => {
-  try {
-    const blog = await Blog.findOne({ urlSlug: req.params.urlSlug });
-    if (!blog) return res.status(404).json({ message: 'Blog not found' });
-    res.json(blog);
-  } catch (error) {
-    console.error('Error fetching blog by slug:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
 
 module.exports = router;
